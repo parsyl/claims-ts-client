@@ -46,10 +46,10 @@ jobs:
           message: |
             You can install the pre-release version with the following command:
             ```
-            yarn add @parsyl/insurance-ts-client@${{ needs.prerelease.outputs.version }}
+            yarn add @parsyl/claims-ts-client@${{ needs.prerelease.outputs.version }}
             ```
             or
             ```
-            npm install @parsyl/insurance-ts-client@${{ needs.prerelease.outputs.version }}
+            npm install @parsyl/claims-insurancets-client@${{ needs.prerelease.outputs.version }}
             ```
-            After you merge this PR, you can go to [Manage versions](https://github.com/parsyl/insurance-ts-client/pkgs/npm/insurance-ts-client/versions) to delete any pre-release versions you no longer need.
+            After you merge this PR, you can go to [Manage versions](https://github.com/parsyl/claims-ts-client/pkgs/npm/claims-ts-client/versions) to delete any pre-release versions you no longer need.
