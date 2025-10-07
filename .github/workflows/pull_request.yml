@@ -1,0 +1,55 @@
+name: Prerelease on Pull Request
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  prerelease:
+    name: Prerelease
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.set_version.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://npm.pkg.github.com/
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set Prerelease Version
+        id: set_version
+        run: |
+          VERSION=$(npm version prerelease --preid=${{ github.head_ref }}-${{ github.run_number }} --no-git-tag-version)
+          VERSION=${VERSION#*v}  # Remove the leading 'v' from the version string
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+      - name: Publish Package
+        run: npm publish --tag ${{ github.head_ref }} --scope=@parsyl
+
+  post-comment-to-pr:
+    needs: prerelease
+    name: Post Comment To PR
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      pull-requests: write
+    steps:
+      - name: Add PR comment
+        uses: mshick/add-pr-comment@v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          message: |
+            You can install the pre-release version with the following command:
+            ```
+            yarn add @parsyl/claims-ts-client@${{ needs.prerelease.outputs.version }}
+            ```
+            or
+            ```
+            npm install @parsyl/claims-insurancets-client@${{ needs.prerelease.outputs.version }}
+            ```
+            After you merge this PR, you can go to [Manage versions](https://github.com/parsyl/claims-ts-client/pkgs/npm/claims-ts-client/versions) to delete any pre-release versions you no longer need.
