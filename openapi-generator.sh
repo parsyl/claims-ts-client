@@ -11,7 +11,7 @@ source vars.sh
 
 echo -e "${BLUE}Starting OpenAPI generator...${NC}"
 
-# if running against local checkout of insurance-api
+# if running against local checkout of claims-api
 if [ "$1" == "--local" ] || [ "$1" == "-l" ]; then
     echo -e "${YELLOW}Using local OpenAPI spec at: $localOpenApiSpecPath${NC}"
     specPath=$localOpenApiSpecPath

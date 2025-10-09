@@ -1,4 +1,3 @@
-.openapi-generator-ignore
 apis/ClaimsApi.ts
 apis/DocumentExternalReferencesApi.ts
 apis/DocumentsApi.ts
